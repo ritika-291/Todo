@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+    <form action="/register" method="POST" class="register-form">
+        <h2>Create Your Account</h2>
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn">Sign Up</button>
+
+        <p class="footer-text">Already have an account? <a href="/login">Login</a></p>
+    </form>
+
+    <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <% if (success) { %>
+    <div class="alert alert-success"><%= success %></div>
+    <% } %>
+</div>
+
+</body>
+</html>

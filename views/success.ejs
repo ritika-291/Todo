@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="success-container">
+
+    <h2 class="success-title">Welcome, <%= username %> 👋</h2>
+
+    <div class="todo-card">
+        <h3>Add a New To-Do</h3>
+
+        <form action="/add-todo" method="POST" class="todo-form">
+            <input type="hidden" name="email" value="<%= userEmail %>">
+
+            <input 
+                type="text" 
+                name="todo" 
+                placeholder="Enter a new task..." 
+                required 
+                class="todo-input"
+            >
+
+            <button type="submit" class="todo-btn">Add Task</button>
+        </form>
+    </div>
+
+    <div class="todo-list-card">
+        <h3>Your To-Do List 📝</h3>
+
+        <% if (!todos || todos.length === 0) { %>
+            <p class="empty-text">No tasks yet. Start adding some!</p>
+        <% } else { %>
+            <ul class="todo-list">
+                <% todos.forEach(todo => { %>
+                    <li class="todo-item" data-id="<%= todo.id %>">
+                        <span class="todo-text-display"><%= todo.todo_text %></span>
+
+                        <form action="/edit-todo" method="POST" class="edit-todo-form hidden">
+                            <input type="hidden" name="id" value="<%= todo.id %>">
+                            <input 
+                                type="text" 
+                                name="todo_text" 
+                                value="<%= todo.todo_text %>" 
+                                required 
+                                class="todo-edit-input"
+                            >
+                            <button type="submit" class="btn-save">Save</button>
+                            <button type="button" class="btn-cancel">Cancel</button>
+                        </form>
+
+                        <div class="todo-actions">
+                            <button type="button" class="btn-edit">Edit</button>
+                            <form action="/delete-todo" method="POST" class="delete-todo-form">
+                                <input type="hidden" name="id" value="<%= todo.id %>">
+                                <button type="submit" class="btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to attach event listeners to a new todo item
+        function attachTodoEventListeners(listItem) {
+            // Edit button
+            const editButton = listItem.querySelector('.btn-edit');
+            if (editButton) {
+                editButton.addEventListener('click', (event) => {
+                    const todoTextDisplay = listItem.querySelector('.todo-text-display');
+                    const editForm = listItem.querySelector('.edit-todo-form');
+                    const todoActions = listItem.querySelector('.todo-actions');
+    
+                    todoTextDisplay.classList.add('hidden');
+                    todoActions.classList.add('hidden');
+                    editForm.classList.remove('hidden');
+                });
+            }
+    
+            // Cancel button
+            const cancelButton = listItem.querySelector('.btn-cancel');
+            if (cancelButton) {
+                cancelButton.addEventListener('click', (event) => {
+                    const todoTextDisplay = listItem.querySelector('.todo-text-display');
+                    const editForm = listItem.querySelector('.edit-todo-form');
+                    const todoActions = listItem.querySelector('.todo-actions');
+                    const todoEditInput = listItem.querySelector('.todo-edit-input');
+    
+                    todoEditInput.value = todoTextDisplay.textContent; // Revert input value
+    
+                    editForm.classList.add('hidden');
+                    todoTextDisplay.classList.remove('hidden');
+                    todoActions.classList.remove('hidden');
+                });
+            }
+    
+            // Save (Edit) form submission
+            const editForm = listItem.querySelector('.edit-todo-form');
+            if (editForm) {
+                editForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+    
+                    const todoId = editForm.querySelector('input[name="id"]').value;
+                    const newTodoText = editForm.querySelector('input[name="todo_text"]').value;
+    
+                    try {
+                        const response = await fetch(editForm.action, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id: todoId, todo_text: newTodoText }),
+                        });
+    
+                        if (response.ok) {
+                            const todoTextDisplay = listItem.querySelector('.todo-text-display');
+                            todoTextDisplay.textContent = newTodoText;
+    
+                            editForm.classList.add('hidden');
+                            todoTextDisplay.classList.remove('hidden');
+                            listItem.querySelector('.todo-actions').classList.remove('hidden');
+                        } else {
+                            alert('Failed to update todo.');
+                        }
+                    } catch (error) {
+                        console.error('Error updating todo:', error);
+                        alert('An error occurred while updating the todo.');
+                    }
+                });
+            }
+    
+            // Delete form submission
+            const deleteForm = listItem.querySelector('.delete-todo-form');
+            if (deleteForm) {
+                deleteForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+    
+                    const confirmation = confirm('Are you sure you want to delete this todo item?');
+                    if (confirmation) {
+                        const todoId = deleteForm.querySelector('input[name="id"]').value;
+    
+                        try {
+                            const response = await fetch(deleteForm.action, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: todoId }),
+                            });
+    
+                            if (response.ok) {
+                                listItem.remove();
+                                const todoList = document.querySelector('.todo-list');
+                                if (todoList && todoList.children.length === 0) {
+                                    const todoListCard = document.querySelector('.todo-list-card');
+                                    if (todoListCard) {
+                                        todoListCard.innerHTML += '<p class="empty-text">No tasks yet. Start adding some!</p>';
+                                    }
+                                }
+                            } else {
+                                alert('Failed to delete todo.');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting todo:', error);
+                            alert('An error occurred while deleting the todo.');
+                        }
+                    }
+                });
+            }
+        }
+
+        // Handle Add Todo form submission with AJAX
+        const addTodoForm = document.querySelector('.todo-form');
+        if (addTodoForm) {
+            addTodoForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent default form submission
+
+                const emailInput = addTodoForm.querySelector('input[name="email"]');
+                const todoInput = addTodoForm.querySelector('input[name="todo"]');
+                const email = emailInput ? emailInput.value : '';
+                const todoText = todoInput ? todoInput.value.trim() : '';
+
+                if (!todoText) {
+                    alert('Todo text cannot be empty.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(addTodoForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: email, todo: todoText }),
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        const todoList = document.querySelector('.todo-list');
+                        const emptyText = document.querySelector('.empty-text');
+
+                        // Remove empty message if present
+                        if (emptyText) {
+                            emptyText.remove();
+                        }
+
+                        // If todoList doesn't exist, create it inside todoListCard
+                        let currentTodoList = todoList;
+                        if (!currentTodoList) {
+                            const todoListCard = document.querySelector('.todo-list-card');
+                            if (todoListCard) {
+                                currentTodoList = document.createElement('ul');
+                                currentTodoList.classList.add('todo-list');
+                                todoListCard.appendChild(currentTodoList);
+                            }
+                        }
+
+                        // Create a new list item
+                        const newTodoId = result.id;
+                        const newLi = document.createElement('li');
+                        newLi.classList.add('todo-item');
+                        newLi.dataset.id = newTodoId;
+                        newLi.innerHTML = `
+                            <span class="todo-text-display">${todoText}</span>
+
+                            <form action="/edit-todo" method="POST" class="edit-todo-form hidden">
+                                <input type="hidden" name="id" value="${newTodoId}">
+                                <input 
+                                    type="text" 
+                                    name="todo_text" 
+                                    value="${todoText}" 
+                                    required 
+                                    class="todo-edit-input"
+                                >
+                                <button type="submit" class="btn-save">Save</button>
+                                <button type="button" class="btn-cancel">Cancel</button>
+                            </form>
+
+                            <div class="todo-actions">
+                                <button type="button" class="btn-edit">Edit</button>
+                                <form action="/delete-todo" method="POST" class="delete-todo-form">
+                                    <input type="hidden" name="id" value="${newTodoId}">
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        `;
+                        
+                        if (currentTodoList) {
+                          currentTodoList.appendChild(newLi);
+                          attachTodoEventListeners(newLi); // Attach event listeners to the new item
+                        }
+
+                        // Clear the input field
+                        if (todoInput) {
+                          todoInput.value = '';
+                        }
+
+                    } else {
+                        alert('Failed to add todo.');
+                    }
+                } catch (error) {
+                    console.error('Error adding todo:', error);
+                    alert('An error occurred while adding the todo.');
+                }
+            });
+        }
+
+        // Attach event listeners for existing todos on page load
+        document.querySelectorAll('.todo-item').forEach(attachTodoEventListeners);
+
+    });
+</script>
+
+</body>
+</html>

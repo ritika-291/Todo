@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <form action="/login" method="POST" class="register-form">
+        <h2>Login</h2>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+
+        <p class="footer-text">Don't have an account? <a href="/register">Register</a></p>
+        <p class="footer-text"><a href="/forgot-password">Forgot Password?</a></p>
+    </form>
+
+    <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <% if (message) { %>
+        <div class="alert alert-success"><%= message %></div>
+    <% } %>
+
+</div>
+
+</body>
+</html>
