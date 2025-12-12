@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <%- include("partials/navbar") %>
+
+<div class="profile-container">
+
+    <h2 class="profile-heading">Your Profile</h2>
+
+    <!-- Success message -->
+    <div class="profile-success">✔ You are logged in</div>
+
+    <div class="profile-card">
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <%= username.charAt(0).toUpperCase() %>
+            </div>
+
+            <div>
+                <h3 class="profile-name"><%= username %></h3>
+                <p class="profile-email"><%= email %></p>
+                <p class="profile-since">Member since <%= memberSince %></p>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="profile-stats">
+            <div class="stat-item">
+                <h4><%= totalTodos %></h4>
+                <p>Todos Created</p>
+            </div>
+
+            <div class="stat-item">
+                <h4>0</h4>
+                <p>Total Clicks</p>
+            </div>
+
+            <div class="stat-item">
+                <h4><%= lastActive %></h4>
+                <p>Last Active</p>
+            </div>
+        </div>
+
+        <!-- Email Verification -->
+        <div class="verification-row">
+            <span>Email Verification:</span>
+            <% if (isVerified) { %>
+                <span class="verify-badge green">✔ Verified</span>
+            <% } else { %>
+                <span class="verify-badge red">✖ Not Verified</span>
+            <% } %>
+            <button class="verify-btn"><a href="/verify-email" class="verify-btn">Verify Now</a></button>
+        </div>
+
+        <!-- Buttons -->
+        <div class="profile-actions">
+            <button class="action-btn"><a href="/edit-profile " class="action-btn"> Profile </a></button>
+            <button class="action-btn"><a href="/forgot-password" class="action-btn"> Change Password </a> </button>
+            <a href="/logout" class="action-btn logout">Logout</a>
+        </div>
+
+    </div>
+
+</div>
+
+    
+</body>
+</html>

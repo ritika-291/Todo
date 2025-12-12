@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/navbar") %>
+
+<div class="container">
+    <h2>Edit Profile</h2>
+
+    <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <form action="/edit-profile" method="POST">
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" value="<%= username %>" required />
+        </div>
+
+        <div class="input-group">
+            <label>Email (cannot be changed)</label>
+            <input type="email" value="<%= email %>" disabled />
+        </div>
+
+        <button class="btn">Save Changes</button>
+    </form>
+</div>
+
+</body>
+</html>

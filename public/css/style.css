@@ -4,16 +4,15 @@ body {
     padding: 0;
     font-family: "Poppins", sans-serif;
     background: linear-gradient(135deg, #5a3beb, #8e67f0);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height: 100vh;
 }
+
 
 /* Container for the form */
 .container {
-    width: 400px;
+    max-width: 500px;
     background: #ffffff;
+    margin: 80px auto;
     padding: 30px 40px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -88,8 +87,8 @@ body {
 /* SUCCESS PAGE STYLING */
 
 .success-container {
-    width: 60%;
-    margin: 40px auto;
+    max-width: 500px;
+    margin: 80px auto;
     padding: 20px;
     font-family: "Poppins", sans-serif;
 }
@@ -271,3 +270,268 @@ body {
 .hidden {
     display: none !important;
 }
+
+/* ---------------------- NAVBAR CONTAINER ---------------------- */
+
+.navbar {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.35);   /* Transparent dark overlay */
+  backdrop-filter: blur(6px);              /* Glass effect */
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Center everything inside navbar */
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;                          /* Centers navbar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+}
+
+/* ---------------------- LOGO ---------------------- */
+.nav-logo a {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+/* ---------------------- NAV LINKS (DESKTOP) ---------------------- */
+
+.nav-menu {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-link {
+  color: #e6e6e6;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Logout is highlighted */
+.logout-btn {
+  color: #ff7b7b;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  color: #ffb3b3;
+}
+
+/* ---------------------- MOBILE MENU STYLE ---------------------- */
+
+.nav-toggle {
+  display: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-toggle .bar {
+  width: 28px;
+  height: 3px;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+/* When hamburger is active */
+.nav-toggle.is-active .bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav-toggle.is-active .bar:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.is-active .bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ---------------------- MOBILE RESPONSIVE RULES ---------------------- */
+@media (max-width: 768px) {
+  .nav-menu {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.75);
+    backdrop-filter: blur(5px);
+    flex-direction: column;
+    padding: 20px 0;
+    display: none;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+}
+
+/* Profile Container */
+.profile-container {
+    max-width: 750px;
+    margin: 120px auto;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Page Heading */
+.profile-heading {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Success Message */
+.profile-success {
+    background: #e8fff0;
+    color: #0c7a37;
+    padding: 12px;
+    border-left: 5px solid #2cc56b;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Profile Card */
+.profile-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-avatar {
+    width: 70px;
+    height: 70px;
+    background: #5a3beb;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.profile-name {
+    font-size: 22px;
+    margin: 0;
+    color: #333;
+}
+
+.profile-email {
+    color: #555;
+    margin-top: 3px;
+}
+
+.profile-since {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Stats Section */
+.profile-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item h4 {
+    font-size: 22px;
+    color: #333;
+}
+
+/* Verification Row */
+.verification-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.verify-badge.red {
+    background: #ffe0e0;
+    color: #c00000;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.verify-btn {
+    background: #5a3beb;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Action Buttons */
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.action-btn {
+    background: #5a3beb;
+    padding: 10px 18px;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.logout {
+    background: #ff4d4d !important;
+}
+
+.verify-box {
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .verify-input-box {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .resend-btn {
+    background: #555;
+    margin-top: 10px;
+  }
+  

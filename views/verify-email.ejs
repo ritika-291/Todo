@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include("partials/navbar") %>
+
+<div class="container">
+
+    <h2 class="profile-heading">Verify Your Email</h2>
+
+    <% if (message) { %>
+        <div class="alert alert-success"><%= message %></div>
+    <% } %>
+
+    <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <div class="verify-box">
+        <p><strong>Email:</strong> <%= email %></p>
+        <p>Your email is not verified. Enter the 8-digit code sent to your email or resend the code.</p>
+
+        <form action="/resend-code" method="POST">
+            <button class="btn resend-btn">Resend Verification Link</button>
+        </form>
+    </div>
+
+    <div class="verify-input-box">
+        <form action="/verify-code" method="POST">
+            <label>Enter 8-Digit Verification Code:</label>
+            <input type="text" name="code" maxlength="8" required />
+            <button class="btn">Verify Code</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
