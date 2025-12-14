@@ -9,4 +9,5 @@ export function createAcessToken(user){
         process.env.JWT_SECRET,
         {expiresIn:"15m"}
     )
-}
+}   
+

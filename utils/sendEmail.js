@@ -1,32 +1,21 @@
-import nodemailer from "nodemailer";
+import {Resend} from "resend";
+import { generateVerifyEmailHtml } from "./emails/verify-email.js";
 
-export async function sendVerificationEmail(to, code) {
-  
-  // Create a test account automatically
-  const testAccount = await nodemailer.createTestAccount();
+// Remove the top-level Resend initialization
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // Create transporter
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: testAccount.user,
-      pass: testAccount.pass
-    }
-  });
+export async function sendVerificationEmail(to, code, resendApiKey, fromEmail) { // Add resendApiKey and fromEmail as arguments
+  const resend = new Resend(resendApiKey); // Initialize Resend here
+  const verifyUrl = "http://localhost:3000/verify-email";
 
-  // Email content
-  const info = await transporter.sendMail({
-    from: `"MyApp" <no-reply@myapp.com>`,
+  const html = generateVerifyEmailHtml(code, verifyUrl);
+
+  await resend.emails.send({
+    from: fromEmail, // Use the passed fromEmail
     to,
-    subject: "Your Email Verification Code",
-    html: `
-      <h2>Your Verification Code</h2>
-      <p>Enter this 8-digit code to verify your email:</p>
-      <h3>${code}</h3>
-    `
+    subject: "Verify Your Email Address",
+    html
   });
 
-  console.log("📨 Message sent: ", info.messageId);
-  console.log("🔗 Preview URL: ", nodemailer.getTestMessageUrl(info));
+  console.log("✅ Verification email sent to:", to);
 }

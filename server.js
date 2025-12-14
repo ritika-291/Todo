@@ -3,10 +3,10 @@ dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
-import getAuthRoutes from "./routes/auth.js"; 
+import getAuthRoutes from "./routes/auth.js";
 import { fileURLToPath } from "url";
 import session from "express-session";
-import { initializeDatabase } from "./db/db.js"; 
+import { initializeDatabase } from "./db/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

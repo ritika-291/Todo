@@ -95,9 +95,11 @@ body {
 
 .success-title {
     text-align: center;
-    font-size: 32px;
-    margin-bottom: 30px;
-    color: #5a3beb;
+    font-size: 38px; /* Slightly larger for more impact */
+    font-weight: 700; /* Bolder text */
+    margin-bottom: 35px; /* More space below */
+    color: #4a2ec2; /* A slightly deeper, richer blue */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
 }
 
 .todo-card,

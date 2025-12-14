@@ -150,7 +150,7 @@ router.post("/resend-code", requireAuth, async (req, res) => {
     [code, email]
   );
 
-  await sendVerificationEmail(email, code);
+  await sendVerificationEmail(email, code, process.env.RESEND_API_KEY, process.env.FROM_EMAIL); // Pass the API key and from email
 
   res.render("verify-email", {
     email,
